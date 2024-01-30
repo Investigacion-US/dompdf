@@ -593,8 +593,11 @@ class CPDF implements Canvas
         if ($filename !== null && file_exists($filename)) {
             return $filename;
         }
- 
-        $func_name = "imagecreatefrom$type";
+
+        $func_name = "imagecreatefrom$type".'_';
+        if (!function_exists($func_name)) {
+            $func_name = "imagecreatefrom$type";
+        } 
 
         set_error_handler([Helpers::class, "record_warnings"]);
 

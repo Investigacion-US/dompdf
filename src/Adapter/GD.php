@@ -616,7 +616,11 @@ class GD implements Canvas
             return;
         }
 
-        $func_name = "imagecreatefrom$img_type";
+        $func_name = "imagecreatefrom$img_type".'_';
+        if (!function_exists($func_name)) {
+            $func_name = "imagecreatefrom$img_type";
+        } 
+
         if (method_exists(Helpers::class, $func_name)) {
             $func_name = [Helpers::class, $func_name];
         } elseif (!function_exists($func_name)) {

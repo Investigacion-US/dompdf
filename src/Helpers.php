@@ -761,8 +761,12 @@ class Helpers
         if (isset($cache[$filename])) {
             return $cache[$filename];
         }
-
-        [$width, $height, $type] = getimagesize($filename);
+        if (!function_exists("getimagesize_")) {
+            [$width, $height, $type] = getimagesize($filename);
+        } else {
+            [$width, $height, $type] = getimagesize_($filename, $context);
+        }
+        
 
         // Custom types
         $types = [
