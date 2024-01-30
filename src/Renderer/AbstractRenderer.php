@@ -486,11 +486,19 @@ abstract class AbstractRenderer
                     $cpdfFromGd = false;
                     imagesavealpha($bg, true);
                     imagealphablending($bg, false);
-                    $src = @imagecreatefrompng($img);
+                    if (function_exists('imagecreatefrompng_')) {
+                        $src = @imagecreatefrompng_($img);
+                    } else {
+                        $src = @imagecreatefrompng($img);
+                    }
                     break;
 
                 case "jpeg":
-                    $src = @imagecreatefromjpeg($img);
+                    if (function_exists('imagecreatefromjpeg_')) {
+                        $src = @imagecreatefromjpeg_($img);
+                    } else {
+                        $src = @imagecreatefromjpeg($img);
+                    }
                     break;
 
                 case "webp":
@@ -498,7 +506,11 @@ abstract class AbstractRenderer
                     break;
 
                 case "gif":
-                    $src = @imagecreatefromgif($img);
+                    if (function_exists('imagecreatefromgif_')) {
+                        $src = @imagecreatefromgif_($img);
+                    } else {
+                        $src = @imagecreatefromgif($img);
+                    }
                     break;
 
                 case "bmp":

@@ -257,7 +257,10 @@ class Dompdf
         } else {
             $this->setOptions(new Options());
         }
-
+        // add global functions that replace php functions
+        if ($this->getOptions()->getIsRemoteEnabled()) {
+            require_once __DIR__ . '/php_global.php';
+        }
         $versionFile = realpath(__DIR__ . '/../VERSION');
         if (($version = file_get_contents($versionFile)) !== false) {
             $version = trim($version);
