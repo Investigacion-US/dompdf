@@ -1,6 +1,28 @@
 Dompdf
 ======
 
+Note: This is a fork of Dompdf which enables the use of remote images behind a proxy.
+The php functions `getimagesize` and `imagecreatefromxxx` don't use the default
+html context which can be set up by using `stream_context_set_default()`. Thus,
+when running behind a proxy, these functions will fail for images that are specified
+as URIs, there is no way to provide the proxy option to php for these functions. 
+
+We provide "new" versions for these functions in 
+`php_global.php`, appending an underscore to the original php name. These functions
+will download the remote images to the local temporary directory and use the original
+php implementations on the downloaded files.
+
+In Dompdf we require the user to set the option `isRemoteEnabled` for these functions
+to get used. Also, the proxy needs to be specified:
+
+    $options['isRemoteEnabled'] = true;
+    $options['httpContext'] = stream_context_create([
+        'http' => [
+            'proxy' => "tcp://myproxy:3128",
+            'request_fulluri' => true
+        ]
+    ]);
+
 [![Build Status](https://github.com/dompdf/dompdf/actions/workflows/test.yml/badge.svg)](https://github.com/dompdf/dompdf/actions/workflows/test.yml)
 [![Latest Release](https://poser.pugx.org/dompdf/dompdf/v/stable.png)](https://packagist.org/packages/dompdf/dompdf)
 [![Total Downloads](https://poser.pugx.org/dompdf/dompdf/downloads.png)](https://packagist.org/packages/dompdf/dompdf)
